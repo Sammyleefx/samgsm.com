@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAMGSM.COM | GSM SERVER</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial;background:#f3f6f7;color:#18383d}
+header{background:#062b30;color:white;padding:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.logo{font-size:25px;font-weight:bold;color:#fff}
+.logo span{color:#00c7b5}
+nav{background:#087e78;padding:13px;display:flex;justify-content:space-around;flex-wrap:wrap}
+nav a{color:white;text-decoration:none;font-size:13px}
+.hero{background:linear-gradient(130deg,#041b22,#087e78);padding:65px 22px;color:white}
+.hero h1{font-size:38px}
+.hero span{color:#35e1cd}
+.btn{background:#00a99d;color:white;padding:10px 18px;border:0;border-radius:7px;text-decoration:none;display:inline-block;margin-top:5px;cursor:pointer;font-size:13px}
+.section{padding:25px 5%}
+.section h2{color:#087e78}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px}
+.card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 12px #0001}
+.icon{background:#078c85;color:white;padding:25px;text-align:center;font-size:30px;border-radius:8px}
+.price{color:#078c85;font-weight:bold}
+.order{background:#078c85;color:white;border:0;padding:10px;border-radius:6px;cursor:pointer;width:100%;margin-top:10px}
+.contact{background:#052b30;color:white;padding:30px}
+footer{background:#031e22;color:#a8c6c6;padding:20px;text-align:center}
+input{padding:12px;width:100%;margin:7px 0;border:1px solid #ccc;border-radius:6px}
+
+/* Modal styles */
+.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);align-items:center;justify-content:center}
+.modal-content{background:white;padding:30px;border-radius:10px;width:90%;max-width:450px;text-align:center;box-shadow:0 5px 15px rgba(0,0,0,0.3);max-height:80vh;overflow-y:auto}
+.modal-content h2{color:#062b30;margin-top:0}
+.close-btn{float:right;font-size:24px;cursor:pointer;color:#888}
+.switch-link{color:#087e78;cursor:pointer;margin-top:15px;display:block;font-size:14px}
+#userStatus{color:#35e1cd;font-size:14px;margin-right:10px}
+
+/* Admin Dashboard Table */
+table{width:100%;border-collapse:collapse;margin-top:15px;text-align:left}
+th, td{border:1px solid #ddd;padding:8px;font-size:12px}
+th{background:#087e78;color:white}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">SAM<span>GSM</span>.COM</div>
+<div style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+<span id="userStatus"></span>
+<button class="btn" id="authBtn" onclick="openModal()">LOGIN / SIGNUP</button>
+<button class="btn" onclick="openAdminModal()" style="background:#041b22; border:1px solid #35e1cd;">👑 ADMIN PANEL</button>
+<a class="btn" href="https://wa.me/254717770683">SUPPORT</a>
+</div>
+</header>
+
+<nav>
+<a href="#home">HOME</a>
+<a href="#services">SERVICES</a>
+<a href="#recent">RECENT ADDED</a>
+<a href="#best">BEST SELLING</a>
+<a href="#contact">CONTACT</a>
+</nav>
+
+<section class="hero" id="home">
+<h1>WELCOME TO <span>SAMGSM SERVER</span></h1>
+<p>Your trusted source for GSM tools, activations, credits and mobile services.</p>
+<a href="#services" class="btn">EXPLORE SERVICES</a>
+</section>
+
+<section class="section" id="services">
+<h2>OUR SERVICES</h2>
+<div class="products">
+<div class="card"><div class="icon">📱</div><h3>IMEI SERVICES</h3><p>Mobile device services</p></div>
+<div class="card"><div class="icon">⚡</div><h3>ACTIVATIONS & CREDITS</h3><p>Tool licenses and credits</p></div>
+<div class="card"><div class="icon">🔧</div><h3>TOOL RENT</h3><p>Professional GSM tools</p></div>
+<div class="card"><div class="icon">🌐</div><h3>NETWORK SERVICES</h3><p>Network-related services</p></div>
+</div>
+</section>
+
+<section class="section" id="recent">
+<h2>RECENT ADDED</h2>
+<div class="products" id="recentProducts"></div>
+</section>
+
+<section class="section" id="best">
+<h2>BEST SELLING</h2>
+<div class="products" id="bestProducts"></div>
+</section>
+
+<section class="section">
+<h2>M-PESA PAYMENT</h2>
+<div class="card">
+<h3>Safaricom M-Pesa Kenya</h3>
+<p>Paybill: <b>YOUR PAYBILL NUMBER</b></p>
+<p>Account: <b>SAMGSM</b></p>
+<p>Send payment confirmation to our WhatsApp for order verification.</p>
+<a class="btn" href="https://wa.me/254717770683">SEND PAYMENT CONFIRMATION</a>
+</div>
+</section>
+
+<section class="contact" id="contact">
+<h2>CONTACT SAMGSM</h2>
+<p>📞 Phone: 0794389430</p>
+<p>📧 Email: sammylee.tech0@gmail.com</p>
+<p>💬 WhatsApp: 0717770683</p>
+<a class="btn" href="https://wa.me/254717770683">CHAT WITH US</a>
+</section>
+
+<footer>
+<p>© 2026 SAMGSM.COM</p>
+<p>Powered by SAMMY LEE</p>
+</footer>
+
+<!-- LOGIN / SIGNUP MODAL -->
+<div id="authModal" class="modal">
+<div class="modal-content">
+<span class="close-btn" onclick="closeModal()">&times;</span>
+<h2 id="modalTitle">Login to SAMGSM</h2>
+<form id="authForm" onsubmit="handleAuth(event)">
+<input type="text" id="usernameInput" placeholder="Enter Username / Email" required>
+<input type="password" id="passwordInput" placeholder="Enter Password" required>
+<button type="submit" class="order" id="submitBtn">LOGIN</button>
+</form>
+<span class="switch-link" id="switchText" onclick="toggleAuthMode()">Don't have an account? Sign Up</span>
+</div>
+</div>
+
+<!-- ADMIN PANEL MODAL -->
+<div id="adminModal" class="modal">
+<div class="modal-content" style="max-width: 600px;">
+<span class="close-btn" onclick="closeAdminModal()">&times;</span>
+<h2>👑 Admin Dashboard</h2>
+<div id="adminLoginBox">
+<p>Enter Admin Password to Access Dashboard:</p>
+<input type="password" id="adminPassInput" placeholder="Admin Password">
+<button class="order" onclick="verifyAdmin()">LOGIN AS ADMIN</button>
+</div>
+<div id="adminDashboardContent" style="display:none;">
+<h3 style="color:#087e78; text-align:left; margin-bottom:5px;">📊 Orodha ya Oda Zote (Orders)</h3>
+<div style="max-height: 250px; overflow-y: auto;">
+<table>
+<thead>
+<tr><th>Mteja</th><th>Bidhaa</th><th>Saa</th></tr>
+</thead>
+<tbody id="ordersTableBody">
+</tbody>
+</table>
+</div>
+<button class="order" style="background:#d9534f; margin-top:15px;" onclick="clearOrders()">FUTA ODA ZOTE</button>
+</div>
+</div>
+</div>
+
+<script>
+const TELEGRAM_BOT_TOKEN = "WEKA_TOKEN_YAKO_HAPA"; 
+const TELEGRAM_CHAT_ID = "sammylee254";
+
+function sendTelegramNotification(message) {
+    if(TELEGRAM_BOT_TOKEN === "WEKA_TOKEN_YAKO_HAPA") return;
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+    fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: "@" + TELEGRAM_CHAT_ID, text: message, parse_mode: "Markdown" })
+    }).catch(err => console.log("Telegram Error:", err));
+}
+
+setTimeout(() => {
+    let visitorMsg = `🚀 *SAMGSM.COM VISITOR ALERT*
+
+Mteja mpya yuko kwenye website kwa sasa!
+⏰ Saa: ${new Date().toLocaleTimeString()}`;
+    sendTelegramNotification(visitorMsg);
+}, 120000);
+
+const recent = [
+["FenixTool 1 Year License","44.78"],
+["FenixTool 1 Month License","16.64"],
+["FenixTool Add Credits","1.07"],
+["Sigma Plus Dongle Rent","1.95"],
+["Knox Wizard Tool 48 HRS","5.00"],
+["CM2 Dongle Rent","2.50"],
+["Xiaomi Dual CPID","49.17"]
+];
+
+const best = [
+["Pandora 48 Hrs Rent","25.00"],
+["CM2 Port Share","2.50"],
+["UnlockTool Rent 6 Hours","0.77"],
+["Chalotech 1 Day License","3.06"],
+["AMT Android Multi Tool","0.50"],
+["QUMSE GSM PRO","3.00"],
+["360 Tool Credits","1.00"],
+["Smart Tool Rent","1.54"],
+["Tojo 360 Tool Rent","1.53"]
+];
+
+function displayProducts(id,items){
+document.getElementById(id).innerHTML=items.map(item=>`
+<div class="card">
+<div class="icon">🛠️</div>
+<h3>${item[0]}</h3>
+<p class="price">$${item[1]} USD</p>
+<button class="order" onclick="order('${item[0]}')">ORDER NOW</button>
+</div>`).join("");
+}
+
+let isLoginMode = true;
+
+function openModal() { document.getElementById("authModal").style.display = "flex"; }
+function closeModal() { document.getElementById("authModal").style.display = "none"; }
+
+function toggleAuthMode() {
+    isLoginMode = !isLoginMode;
+    document.getElementById("modalTitle").innerText = isLoginMode ? "Login to SAMGSM" : "Sign Up to SAMGSM";
+    document.getElementById("submitBtn").innerText = isLoginMode ? "LOGIN" : "SIGN UP";
+    document.getElementById("switchText").innerText = isLoginMode ? "Don't have an account? Sign Up" : "Already have an account? Login";
+}
+
+function handleAuth(event) {
+    event.preventDefault();
+    let user = document.getElementById("usernameInput").value;
+    localStorage.setItem("samgsm_user", user);
+    checkUserSession();
+    closeModal();
+    alert(isLoginMode ? "Umefanikiwa kuingia kwenye akaunti!" : "Akaunti imetengenezwa kikamilifu!");
+}
+
+function checkUserSession() {
+    let currentUser = localStorage.getItem("samgsm_user");
+    if(currentUser) {
+        document.getElementById("userStatus").innerText = "👤 " + currentUser;
+        document.getElementById("authBtn").innerText = "LOGOUT";
+        document.getElementById("authBtn").setAttribute("onclick", "logout()");
+    } else {
+        document.getElementById("userStatus").innerText = "";
+        document.getElementById("authBtn").innerText = "LOGIN / SIGNUP";
+        document.getElementById("authBtn").setAttribute("onclick", "openModal()");
+    }
+}
+
+function logout() {
+    localStorage.removeItem("samgsm_user");
+    checkUserSession();
+    alert("Umetoka kwenye akaunti.");
+}
+
+function openAdminModal() { document.getElementById("adminModal").style.display = "flex"; }
+function closeAdminModal() { document.getElementById("adminModal").style.display = "none"; }
+
+function verifyAdmin() {
+    let pass = document.getElementById("adminPassInput").value;
+    if(pass === "admin123") {
+        document.getElementById("adminLoginBox").style.display = "none";
+        document.getElementById("adminDashboardContent").style.display = "block";
+        loadOrdersToDashboard();
+    } else {
+        alert("❌ Nenosiri si sahihi!");
+    }
+}
+
+function loadOrdersToDashboard() {
+    let orders = JSON.parse(localStorage.getItem("samgsm_orders") || "[]");
+    let tbody = document.getElementById("ordersTableBody");
+    if(orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Hakuna oda bado.</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = orders.map(o => `<tr><td>${o.user}</td><td>${o.product}</td><td>${o.time}</td></tr>`).join("");
+}
+
+function clearOrders() {
+    localStorage.removeItem("samgsm_orders");
+    loadOrdersToDashboard();
+    alert("Oda zote zimefutwa!");
+}
+
+function order(product){
+    let currentUser = localStorage.getItem("samgsm_user");
+    if(!currentUser) {
+        alert("⚠️ Tafadhali ingia kwenye akaunti yako (Login) kwanza ndipo uweze kufanya Order!");
+        openModal();
+        return;
+    }
+    
+    let orders = JSON.parse(localStorage.getItem("samgsm_orders") || "[]");
+    let orderData = { user: currentUser, product: product, time: new Date().toLocaleTimeString() };
+    orders.push(orderData);
+    localStorage.setItem("samgsm_orders", JSON.stringify(orders));
+
+    let orderMsg = `🛒 *NEW ORDER PLACED!*
+
+👤 Mteja: ${currentUser}
+📦 Bidhaa: ${product}
+⏰ Saa: ${new Date().toLocaleTimeString()}`;
+    sendTelegramNotification(orderMsg);
+
+    let msg="Hello SAMGSM, I'm "+currentUser+", I want to order "+product+". Please confirm availability and payment details.";
+    window.open("https://wa.me/254717770683?text="+encodeURIComponent(msg),"_blank");
+}
+
+displayProducts("recentProducts",recent);
+displayProducts("bestProducts",best);
+checkUserSession();
+</script>
+
+</body>
+</html>
